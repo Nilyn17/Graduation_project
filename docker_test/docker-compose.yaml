@@ -1,0 +1,33 @@
+version: "3.5"
+
+services:
+  redis:
+    image: redis:7.0.5-alpine
+    ports:
+      - '6381:6379'
+    volumes:
+      - cache:/data
+  db:
+    image: postgres:13.4
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+  app:
+    build:
+      dockerfile: .
+      context: .
+    command: python3 Fin_Site/manage.py runserver 0.0.0.0:8080
+    volumes:
+      - ./:/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - db
+    env_file:
+      - .env
+
+volumes:
+  db_data:
+  cache:
