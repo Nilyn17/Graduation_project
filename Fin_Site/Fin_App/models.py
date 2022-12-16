@@ -25,10 +25,16 @@ class Space(models.Model):
         through="Shit"
     )
 
+    dick_list = models.ManyToManyField(
+        "Ban_and_KickList",
+        related_name="banlist",
+        through="Dick"
+    )
+
     @property
     def spend(self):
-        money = sum(obj.total for obj in self.send_transactions.all())
-        return money
+        # money = sum()
+        return 
 
     def __str__(self) -> str:
         return f"{self.user.username} | balance: {self.balance}"
@@ -38,6 +44,7 @@ class Shit(models.Model):
         ("A", "admin user"), 
         ("C", "casual user"), 
         ("M", "master user"),
+        ("B", "banned user"), 
         )
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     space = models.ForeignKey(Space, on_delete=models.CASCADE)
@@ -45,40 +52,27 @@ class Shit(models.Model):
 
 
 
-class Spanding(models.Model):
-    transaction_statuses = (
-        ("C", "Completed"),
-        ("A", "Approved"),
-        ("R", "Rejected"),
-        ("P", "Pending"),
-    )
-
-    category = models.CharField()
-
-    from_wallet = models.ForeignKey(
-        Space,
-        on_delete=models.PROTECT,
-        related_name="send_transactions",
-    )
-    to_wallet = models.ForeignKey(
-        Space,
-        on_delete=models.PROTECT,
-        related_name="receive_transactions",
-    )
-    status = models.CharField(
-        max_length=1,
-        choices=transaction_statuses,
-        default=transaction_statuses[-1],
-    )
-    total = models.DecimalField(max_digits=9, decimal_places=2)
-    currency = models.CharField(max_length=3, choices=currency_choices)
-    processed_at = models.DateTimeField(auto_now_add=True)
+class SpandingCategories(models.Model):
+    space = models.ForeignKey(Space, on_delete=models.CASCADE)
+    title = models.CharField(max_length=9999)
 
     def __str__(self) -> str:
-        return f"{self.status} | total: {self.total}"
+        return self.title
 
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            if self.from_wallet.balance - self.total < 0:
-                raise BalanceLessZeroError
-        return super().save(*args, **kwargs)
+class Spanding(models.Model):
+
+    category = models.ForeignKey(SpandingCategories, on_delete=models.CASCADE)
+    currency = models.CharField(max_length=3, choices=currency_choices)
+    spend = models.PositiveIntegerField()
+    spanding_time = models.DateTimeField(auto_now_add=True)
+
+class SpaceLogs(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    action_time = models.DateTimeField(auto_now_add=True)
+    action = models.CharField()
+
+class ReferalCode(models.Model):
+    code = models.CharField(max_length=255)                             #change !!!
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    space = models.ForeignKey(Space, on_delete=models.CASCADE)
+    expiring_time = models.DateTimeField(auto_now_add=True)
