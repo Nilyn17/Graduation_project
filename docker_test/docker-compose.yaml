@@ -28,6 +28,21 @@ services:
     env_file:
       - .env
 
+  bot:
+  build:
+    dockerfile: .
+    context: .
+  command: python3 Fin_Bot/Fin_bot.py
+  volumes:
+    - ./:/bot
+  ports:
+    - "8080:8080"
+  depends_on:
+    - redis
+    - db
+  env_file:
+    - .env
+
 volumes:
   db_data:
   cache:
