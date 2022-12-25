@@ -13,7 +13,7 @@ class SpandingSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class UsersSerializer(serializers.ModelSerializer):
-    user_space = ShitSerializer(many=True)
+    user_space = ShitSerializer(many=True, required=False)
 
     class Meta:
         model = CustomUser
