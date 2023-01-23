@@ -11,15 +11,15 @@ class CustomUserAdmin(admin.ModelAdmin):
 class SpaceAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(SpandingCategories)
+@admin.register(SpendingCategory)
 class SpandingCategoriesAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(Spanding)
+@admin.register(Spending)
 class SpandingAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(SpaceLogs)
+@admin.register(SpaceLog)
 class SpaceLogsAdmin(admin.ModelAdmin):
     pass
 

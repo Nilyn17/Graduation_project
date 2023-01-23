@@ -11,9 +11,8 @@ class FinanceSiteService:
         response.raise_for_status()
         return response.json()
 
-    def get_users(self, page=1):
-        query_params = dict(limit=self.limit, offset=(page - 1) * self.limit)
-        response = requests.get(f"{self.base_url}users/", params=query_params)
+    def get_space(self, user_id):   
+        response = requests.get(f"{self.base_url}users/{user_id}")
         response.raise_for_status()
         return response.json()
 

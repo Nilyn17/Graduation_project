@@ -47,6 +47,8 @@ async def get_start(msg: types.Message):
 @dp.callback_query_handler(Text(contains="start"))
 async def get_admin_commands(callback: types.CallbackQuery):
     username = callback['data'].split(":")[1]
+    print(callback['data'])
+    print("_"*50)
     telegram_id = callback['data'].split(":")[2]
     user = fin_service.create_user({"username": username, "telegram_id": telegram_id})
     inline_kb = types.InlineKeyboardMarkup(row_width=1)
@@ -55,8 +57,8 @@ async def get_admin_commands(callback: types.CallbackQuery):
 
 @dp.callback_query_handler(Text(contains="menu"))
 async def get_admin_commands(callback: types.CallbackQuery):
-
-    users_spaces = fin_service.add_event
+    print(callback['data'])
+    # users_spaces = fin_service.get_space()
 
 
     inline_kb = types.InlineKeyboardMarkup(row_width=1)
